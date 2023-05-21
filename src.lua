@@ -12,7 +12,7 @@
 	Detect cheaters that want to ruin the fun for free.
 	Made by Moonzy | @HiRobloxDown on Roblox.
 	
-	Your Anti-Cheat Version: 1.0.1b0
+	Your Anti-Cheat Version: 1.0.1b1 HTOFIX
 
 ]]
 
@@ -50,16 +50,16 @@ local teleport_Check_A = true
 local teleport_Check_B = true
 
 --// Anticheat - Check Configuration
-local fly_Check_A_Maximum_Air_Time = 2
+local fly_Check_A_Maximum_Air_Time = 2.15
 
-local fly_Check_B_Maximum_Air_Time = 2
+local fly_Check_B_Maximum_Air_Time = 2.15
 
-local fly_Check_C_Maximum_Air_Time = 2
+local fly_Check_C_Maximum_Air_Time = 2.15
 
-local fly_Check_F_Maximum_Air_Time = 0.6
+local fly_Check_F_Maximum_Air_Time = 1.35
 local fly_Check_F_Maximum_Air_Speed = 25
 
-local fly_Check_E_Maximum_Air_Time = 0.4
+local fly_Check_E_Maximum_Air_Time = 0.85
 local fly_Check_E_Maximum_Air_Speed = 15
 
 local speed_Check_A_Maximum_Velocity = 36
@@ -67,7 +67,7 @@ local speed_Check_A_Maximum_Velocity = 36
 local speed_Check_B_Maximum_Velocity = 17
 local speed_Check_B_Minimum_Velocity = 15
 
-local speed_Check_C_Maximum_Threshold = 25
+local speed_Check_C_Maximum_Threshold = 10
 
 local speed_Check_D_Maximum_Velocity = 43
 
@@ -103,7 +103,7 @@ local jump_Check_M_Maximum_Height = 60
 
 local teleport_Check_A_Maximum_Distance_Velocity = 75
 
-
+local teleport_Check_B_Maximum_Distance_Velocity = 80
 
 
 
@@ -860,7 +860,7 @@ players.PlayerAdded:Connect(function(player)
 				local horizontalSpeed = horizontalDistanceMoved / timeTaken
 
 				if root.Position ~= lastPosition then
-					if root.Velocity.Magnitude > teleport_Check_A_Maximum_Distance_Velocity then
+					if root.Velocity.Magnitude > teleport_Check_B_Maximum_Distance_Velocity then
 						if anticheatLagBack then
 							root.Position = lastPosition
 						end
