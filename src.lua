@@ -12,7 +12,7 @@
 	Detect cheaters that want to ruin the fun for free.
 	Made by Moonzy | @HiRobloxDown on Roblox.
 	
-	Your Anti-Cheat Version: 1.0.1b1 HTOFIX
+	Your Anti-Cheat Version: 1.0.1b2 HTOFIX
 
 ]]
 
@@ -88,7 +88,7 @@ local jump_Check_F_Maximum_Threshold = 3
 local jump_Check_G_Maximum_Height = 8
 local jump_Check_G_Minimum_Height = 7
 
-local jump_Check_H_Maximum_Strafe = 80
+local jump_Check_H_Maximum_Strafe = 145
 
 local jump_Check_I_Maximum_Time = 0.2
 
@@ -112,41 +112,45 @@ local teleport_Check_B_Maximum_Distance_Velocity = 80
 
 local players = game:GetService('Players')
 local function raycastOnFloor(root)
-	local humanoid = root.Parent.Humanoid
-	local x = RaycastParams.new()
-	x.FilterType = Enum.RaycastFilterType.Blacklist
-	x.FilterDescendantsInstances = {root.Parent}
+	if not root.Parent.Humanoid then else
+		local humanoid = root.Parent.Humanoid
+		local x = RaycastParams.new()
+		x.FilterType = Enum.RaycastFilterType.Blacklist
+		x.FilterDescendantsInstances = {root.Parent}
 
-	local touchingPart = false
-	local numRaycasts = 20
-	local radius = 1.5
-	local stepSize = math.pi * 2 / numRaycasts
-	local origin = root.Position - Vector3.new(0, 0.1, 0)
-	for i = 1, numRaycasts do
-		local angle = i * stepSize
-		local dir = Vector3.new(radius * math.cos(angle), 0, radius * math.sin(angle))
-		local raycast = workspace:Raycast(origin + dir, Vector3.new(0, -3.5, 0), x)
-		if raycast and raycast.Instance then
-			touchingPart = true
-			break
+		local touchingPart = false
+		local numRaycasts = 20
+		local radius = 1.5
+		local stepSize = math.pi * 2 / numRaycasts
+		local origin = root.Position - Vector3.new(0, 0.1, 0)
+		for i = 1, numRaycasts do
+			local angle = i * stepSize
+			local dir = Vector3.new(radius * math.cos(angle), 0, radius * math.sin(angle))
+			local raycast = workspace:Raycast(origin + dir, Vector3.new(0, -3.5, 0), x)
+			if raycast and raycast.Instance then
+				touchingPart = true
+				break
+			end
 		end
-	end
 
-	return touchingPart
+		return touchingPart
+	end
 end
 
 local function notOnFloorAir(root)
-	local humanoid = root.Parent.Humanoid
-	local material = humanoid.FloorMaterial
-	local timeOnAir = 0
+	if not root.Parent.Humanoid then else
+		local humanoid = root.Parent.Humanoid
+		local material = humanoid.FloorMaterial
+		local timeOnAir = 0
 
-	if material == Enum.Material.Air then
-		timeOnAir = timeOnAir + 0.015
-	else
-		timeOnAir = 0
+		if material == Enum.Material.Air then
+			timeOnAir = timeOnAir + 0.015
+		else
+			timeOnAir = 0
+		end
+
+		return timeOnAir
 	end
-
-	return timeOnAir
 end
 
 players.PlayerAdded:Connect(function(player)
@@ -176,14 +180,18 @@ players.PlayerAdded:Connect(function(player)
 				local humanoidState = humanoid:GetState()
 
 				if timeSinceFloor >= fly_Check_A_Maximum_Air_Time and humanoidState ~= Enum.HumanoidStateType.Landed then
-					if verticalMovement <= 0 then
-						if verticalMovement >= -15 and verticalMovement <= 15 then
-							if anticheatLagBack then
-								root.Position = lastPosition
-								task.wait(0.1)
-							end
-							if anticheatDebug then
-								warn('SENTINEL CHEAT DETECTION: Failed Flight A | ' .. math.round(timeSinceFloor) + math.round(0.1,0.9))
+					if humanoid then
+						if humanoid.Health > 0 then
+							if verticalMovement <= 0 then
+								if verticalMovement >= -15 and verticalMovement <= 15 then
+									if anticheatLagBack then
+										root.Position = lastPosition
+										task.wait(0.1)
+									end
+									if anticheatDebug then
+										warn('SENTINEL CHEAT DETECTION: Failed Flight A | ' .. math.round(timeSinceFloor) + math.round(0.1,0.9))
+									end
+								end
 							end
 						end
 					end
@@ -203,14 +211,18 @@ players.PlayerAdded:Connect(function(player)
 				local verticalMovement = root.Velocity.Y
 
 				if timeOnAir >= fly_Check_B_Maximum_Air_Time then
-					if verticalMovement <= 0 then
-						if verticalMovement >= -15 and verticalMovement <= 15 then
-							if anticheatLagBack then
-								root.Position = lastPosition
-								task.wait(0.1);
-							end
-							if anticheatDebug then
-								warn('SENTINEL CHEAT DETECTION: Failed Flight B | ' .. math.round(timeOnAir) + math.round(0.1,0.9))
+					if humanoid then 
+						if humanoid.Health > 0 then
+							if verticalMovement <= 0 then
+								if verticalMovement >= -15 and verticalMovement <= 15 then
+									if anticheatLagBack then
+										root.Position = lastPosition
+										task.wait(0.1);
+									end
+									if anticheatDebug then
+										warn('SENTINEL CHEAT DETECTION: Failed Flight B | ' .. math.round(timeOnAir) + math.round(0.1,0.9))
+									end
+								end
 							end
 						end
 					end
@@ -236,14 +248,18 @@ players.PlayerAdded:Connect(function(player)
 				local humanoidState = humanoid:GetState()
 
 				if timeSinceFloor >= fly_Check_C_Maximum_Air_Time and humanoidState ~= Enum.HumanoidStateType.Landed then
-					if verticalMovement >= 0 then
-						if verticalMovement >= 2 and verticalMovement <= 25 then
-							if anticheatLagBack then
-								root.Position = lastPosition
-								task.wait(0.1)
-							end
-							if anticheatDebug then
-								warn('SENTINEL CHEAT DETECTION: Failed Flight C | ' .. math.round(timeSinceFloor) + math.round(0.1,0.9))
+					if humanoid then
+						if humanoid.Health > 0 then
+							if verticalMovement >= 0 then
+								if verticalMovement >= 2 and verticalMovement <= 25 then
+									if anticheatLagBack then
+										root.Position = lastPosition
+										task.wait(0.1)
+									end
+									if anticheatDebug then
+										warn('SENTINEL CHEAT DETECTION: Failed Flight C | ' .. math.round(timeSinceFloor) + math.round(0.1,0.9))
+									end
+								end
 							end
 						end
 					end
@@ -263,14 +279,18 @@ players.PlayerAdded:Connect(function(player)
 				local verticalMovement = root.Velocity.Y
 
 				if timeOnAir >= fly_Check_A_Maximum_Air_Time then
-					if verticalMovement >= 0 then
-						if verticalMovement >= 2 and verticalMovement <= 25 then
-							if anticheatLagBack then
-								root.Position = lastPosition
-								task.wait(0.1);
-							end
-							if anticheatDebug then
-								warn('SENTINEL CHEAT DETECTION: Failed Flight D | ' .. math.round(timeOnAir) + math.round(0.1,0.9))
+					if humanoid then
+						if humanoid.Health > 0 then
+							if verticalMovement >= 0 then
+								if verticalMovement >= 2 and verticalMovement <= 25 then
+									if anticheatLagBack then
+										root.Position = lastPosition
+										task.wait(0.1);
+									end
+									if anticheatDebug then
+										warn('SENTINEL CHEAT DETECTION: Failed Flight D | ' .. math.round(timeOnAir) + math.round(0.1,0.9))
+									end
+								end
 							end
 						end
 					end
@@ -300,7 +320,7 @@ players.PlayerAdded:Connect(function(player)
 
 				if timeSinceFloor >= fly_Check_E_Maximum_Air_Time then
 					if verticalMovement <= 0 then
-						if verticalMovement >= -15 and verticalMovement <= 15 and horizontalSpeed >= fly_Check_E_Maximum_Air_Speed then
+						if verticalMovement >= -20 and verticalMovement <= 45 and horizontalSpeed >= fly_Check_E_Maximum_Air_Speed then
 							if anticheatLagBack then
 								root.Position = lastPosition
 								task.wait(0.1)
@@ -331,7 +351,7 @@ players.PlayerAdded:Connect(function(player)
 
 				if timeSinceFloor >= fly_Check_F_Maximum_Air_Time then
 					if verticalMovement >= 0 then
-						if verticalMovement >= 2 and verticalMovement <= 25 and horizontalSpeed >= fly_Check_F_Maximum_Air_Speed then
+						if verticalMovement >= 5 and verticalMovement <= 25 and horizontalSpeed >= fly_Check_F_Maximum_Air_Speed then
 							if anticheatLagBack then
 								root.Position = lastPosition
 								task.wait(0.1)
@@ -858,14 +878,19 @@ players.PlayerAdded:Connect(function(player)
 				local timeTaken = tick() - lastTime
 				local horizontalDistanceMoved = math.sqrt((root.Position.X - lastPosition.X) ^ 2 + (root.Position.Z - lastPosition.Z) ^ 2)
 				local horizontalSpeed = horizontalDistanceMoved / timeTaken
+				local verticalMovement = root.Velocity.Y
 
 				if root.Position ~= lastPosition then
 					if root.Velocity.Magnitude > teleport_Check_B_Maximum_Distance_Velocity then
-						if anticheatLagBack then
-							root.Position = lastPosition
-						end
-						if anticheatDebug then
-							warn('SENTINEL CHEAT DETECTION: Failed Teleport B | ' .. math.round(horizontalSpeed) + math.round(0.1,0.9))
+						if verticalMovement <= 0 then
+							if verticalMovement >= -15 and verticalMovement <= 15 then
+								if anticheatLagBack then
+									root.Position = lastPosition
+								end
+								if anticheatDebug then
+									warn('SENTINEL CHEAT DETECTION: Failed Teleport B | ' .. math.round(horizontalSpeed) + math.round(0.1,0.9))
+								end
+							end
 						end
 					end
 				end
