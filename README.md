@@ -6,7 +6,8 @@
 
 [![](https://cdn.discordapp.com/attachments/1063180819952324719/1109900257405452370/lol1.png)]()
 
-Sentinel is an Advanced Cheat Detection System for Roblox
+Sentinel is an Advanced Cheat Detection System for Roblox.
+
 It runs on a server-side script meaning cheaters will not be able to disable the Anti-Cheat unlike client-sided Anti-Cheats.
 
 By default Sentinel will check if the player is not being legit and is out of Vanilla Boundaries of Roblox and will setback the player to its previous position, however you may configure this to your games needs.
